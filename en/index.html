@@ -446,6 +446,35 @@
   menu.querySelectorAll("a").forEach(a => a.addEventListener("click", () => { menu.classList.remove("aberto"); menuBtn.setAttribute("aria-expanded", false); }));
   document.getElementById("ano").textContent = new Date().getFullYear();
 
+  // manter a posição ao trocar de idioma
+  (function () {
+    const TOPO = 80, CHAVE = "aov-posicao";
+    const blocos = () => [...document.querySelectorAll("main > *")];
+    document.querySelectorAll(".lang a:not(.ativo)").forEach(link => {
+      link.addEventListener("click", () => {
+        const lista = blocos();
+        let i = 0;
+        lista.forEach((el, k) => { if (el.getBoundingClientRect().top <= TOPO) i = k; });
+        const r = lista[i].getBoundingClientRect();
+        const fracao = r.height ? Math.min(1, Math.max(0, (TOPO - r.top) / r.height)) : 0;
+        try { sessionStorage.setItem(CHAVE, JSON.stringify({ i, fracao, noTopo: window.scrollY < 10 })); } catch (e) {}
+        if (lista[i].id) link.href = link.getAttribute("href").split("#")[0] + "#" + lista[i].id;
+      });
+    });
+    let pos = null;
+    try { pos = JSON.parse(sessionStorage.getItem(CHAVE)); sessionStorage.removeItem(CHAVE); } catch (e) {}
+    if (!pos) return;
+    const voltar = () => {
+      if (pos.noTopo) { window.scrollTo({ top: 0, behavior: "instant" }); return; }
+      const el = blocos()[pos.i]; if (!el) return;
+      const y = el.getBoundingClientRect().top + window.scrollY + pos.fracao * el.offsetHeight - TOPO;
+      window.scrollTo({ top: Math.max(0, y), behavior: "instant" });
+    };
+    voltar();
+    window.addEventListener("load", voltar);
+    document.fonts && document.fonts.ready.then(voltar);
+  })();
+
   // ---------- Globo: avião voando do Brasil para a Alemanha ----------
   (async function () {
     if (!window.d3 || !window.topojson) return;
