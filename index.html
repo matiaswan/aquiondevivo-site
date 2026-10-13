@@ -9,6 +9,8 @@
 <meta property="og:description" content="Viagens, gastronomia, cultura e a vida real na Alemanha — vídeo novo toda semana.">
 <meta property="og:image" content="https://aquiondevivo.com.br/matias-e-cris.jpg">
 <meta property="og:url" content="https://aquiondevivo.com.br/">
+<link rel="alternate" hreflang="pt-BR" href="https://aquiondevivo.com.br/">
+<link rel="alternate" hreflang="en" href="https://aquiondevivo.com.br/en/">
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,9 +41,14 @@
 
   /* NAV */
   header.nav{position:sticky;top:0;z-index:20;background:rgba(255,251,240,.92);backdrop-filter:blur(8px);border-bottom:1px solid rgba(45,79,43,.08)}
-  .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:64px;gap:16px}
+  .nav .wrap{display:flex;align-items:center;height:64px;gap:16px}
+  .nav nav{margin-left:auto}
+  .lang{display:flex;align-items:center;gap:6px;font-weight:800;font-size:1rem;color:#A3AE9C;margin-left:14px;padding-left:16px;border-left:1px solid rgba(45,79,43,.15)}
+  .lang a{text-decoration:none;color:#8C9886;padding:6px 4px;border-radius:6px}
+  .lang a:hover{color:var(--verde)}
+  .lang a.ativo{color:var(--verde);text-decoration:underline;text-decoration-color:var(--amarelo);text-decoration-thickness:3px;text-underline-offset:5px}
   .brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--verde)}
-  .brand span{font-family:"Gochi Hand",cursive;font-size:1.55rem;line-height:1}
+  .brand span{font-family:"Gochi Hand",cursive;font-size:1.55rem;line-height:1;white-space:nowrap}
   .nav nav{display:flex;gap:22px;font-weight:700;font-size:.95rem}
   .nav nav a{text-decoration:none;color:var(--verde);opacity:.85}
   .nav nav a:hover{opacity:1;text-decoration:underline;text-decoration-color:var(--amarelo);text-decoration-thickness:3px;text-underline-offset:6px}
@@ -49,6 +56,13 @@
   .menu-btn svg{width:26px;height:26px}
   @media (max-width:720px){
     .menu-btn{display:inline-flex}
+    .lang{margin-left:auto;border-left:0;padding-left:0}
+    .nav .wrap{gap:8px}
+    .brand{gap:8px;min-width:0}
+    .brand span{font-size:1.3rem;white-space:nowrap}
+    .globe-nav{width:32px;height:32px}
+    .lang{font-size:.92rem;gap:4px}
+    .menu-btn{margin-right:-8px}
     .nav nav{position:absolute;left:0;right:0;top:64px;flex-direction:column;gap:0;background:var(--papel);border-bottom:1px solid rgba(45,79,43,.12);box-shadow:0 14px 24px rgba(45,79,43,.12);padding:6px 20px 14px;display:none}
     .nav nav.aberto{display:flex}
     .nav nav a{padding:14px 4px;font-size:1.08rem;border-bottom:1px solid rgba(45,79,43,.08);opacity:1}
@@ -79,6 +93,9 @@
   /* STATS */
   .stats{background:var(--verde);color:var(--creme)}
   .stats .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;padding-top:34px;padding-bottom:34px;text-align:center}
+  .expansao{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px;padding:26px 20px 0;font-family:"Gochi Hand",cursive;font-size:1.25rem;color:var(--creme);opacity:.95}
+  .expansao span{display:inline-flex;align-items:center;gap:8px;background:var(--amarelo);color:var(--verde);font-family:"Nunito",sans-serif;font-weight:800;font-size:.95rem;letter-spacing:.04em;text-transform:uppercase;padding:8px 16px;border-radius:999px}
+  .expansao svg{width:18px;height:18px}
   .stat b{display:block;font-family:"Gochi Hand",cursive;font-size:2.4rem;line-height:1.1;color:var(--amarelo)}
   .stat span{font-size:.95rem;opacity:.9}
   @media (max-width:720px){.stats .wrap{grid-template-columns:repeat(2,1fr)}.stat b{font-size:2rem}}
@@ -208,15 +225,18 @@
       <canvas class="globe globe-nav" data-mini aria-hidden="true"></canvas>
       <span>Aqui Onde Vivo</span>
     </a>
-    <button class="menu-btn" id="menuBtn" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
-    </button>
     <nav id="menu">
       <a href="#sobre">Sobre</a>
       <a href="#videos">Vídeos</a>
       <a href="#parcerias">Parcerias</a>
       <a href="#contato">Contato</a>
     </nav>
+    <div class="lang" aria-label="Idioma">
+      <a href="/" class="ativo" aria-current="true" lang="pt-BR" title="Português">PT</a><span aria-hidden="true">|</span><a href="/en/" lang="en" title="English" hreflang="en">EN</a>
+    </div>
+    <button class="menu-btn" id="menuBtn" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
   </div>
 </header>
 
@@ -255,6 +275,7 @@
 
   <!-- NÚMEROS -->
   <div class="stats" aria-label="O canal em números">
+    <div class="expansao"><span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>Canal em expansão</span> crescendo a cada semana</div>
     <div class="wrap">
       <div class="stat"><b>1 mil+</b><span>inscritos no YouTube</span></div>
       <div class="stat"><b>77+</b><span>vídeos publicados</span></div>
