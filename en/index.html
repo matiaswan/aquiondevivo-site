@@ -464,14 +464,21 @@
     let pos = null;
     try { pos = JSON.parse(sessionStorage.getItem(CHAVE)); sessionStorage.removeItem(CHAVE); } catch (e) {}
     if (!pos) return;
-    const voltar = () => {
-      if (pos.noTopo) { window.scrollTo({ top: 0, behavior: "instant" }); return; }
-      const el = blocos()[pos.i]; if (!el) return;
-      const y = el.getBoundingClientRect().top + window.scrollY + pos.fracao * el.offsetHeight - TOPO;
-      window.scrollTo({ top: Math.max(0, y), behavior: "instant" });
+    const irPara = y => {
+      const raiz = document.documentElement, antes = raiz.style.scrollBehavior;
+      raiz.style.scrollBehavior = "auto";          // sem animação (funciona também no Safari/iPhone)
+      window.scrollTo(0, Math.max(0, y));
+      raiz.style.scrollBehavior = antes;
     };
+    const voltar = () => {
+      if (pos.noTopo) { irPara(0); return; }
+      const el = blocos()[pos.i]; if (!el) return;
+      irPara(el.getBoundingClientRect().top + window.scrollY + pos.fracao * el.offsetHeight - TOPO);
+    };
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual";
     voltar();
-    window.addEventListener("load", voltar);
+    requestAnimationFrame(voltar);
+    window.addEventListener("load", () => { voltar(); setTimeout(voltar, 250); });
     document.fonts && document.fonts.ready.then(voltar);
   })();
 
